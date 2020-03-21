@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width">
+  <title>函数节流、防抖</title>
+  <style>
+    *{ box-sizing: border-box; }
+    body{
+        background: #eee;
+    }
+    h1{
+        text-align: center;
+    }
+    .demo{
+        margin: 0 auto;
+    }
+    .item{
+        width:200px;
+        height:200px;
+        border:1px solid green;
+        margin: 50px auto; 
+        background: #fff;
+        overflow: scroll;
+        position: relative;
+    }
+    .scroll{
+        height:5000px;
+    }
+
+
+
+    .input-list{
+        width: 300px;
+        margin: auto;
+    }
+  </style>
+</head>
+<body>
+    
+    <div class="demo">
+        <h1>打开控制台鼠标滑动查看效果</h1>
+        <div id="nothing" class="item">
+            普通滚动
+            <div class="scroll"></div>
+        </div>
+        <div id="throttle" class="item">
+            函数节流
+            <div class="scroll"></div>
+        </div>
+        <div id="debounce" class="item">
+            函数防抖
+            <div class="scroll"></div>
+        </div>
+    </div>
+    <div class="demo">
+        <h1>打开控制台输入查看效果</h1>
+        <div class="input-list">
+            普通：
+            <input id="nothingInput" type="text" /><br></br>
+            函数节流：
+            <input id="throttleInput" type="text" /><br></br>
+            函数防抖：
+            <input id="debounceInput" type="text" /><br></br>
+        </div>
+    </div>
+
+    <!-- 滑动 -->
+    <script type="text/javascript">
+
+        // 普通滚动
+        let nothing = document.getElementById("nothing")
+        nothing.onscroll = function(){
+            console.log("普通滚动");
+        };
+
+        // 函数节流
+        let canRun = true;
+        let throttle = document.getElementById("throttle")
+        throttle.onscroll = function(){
+            if(!canRun){
+                // 判断是否已空闲，如果在执行中，则直接return
+                return;
+            }
+            canRun = false;
+            setTimeout(function(){
+                console.log("函数节流");
+                canRun = true;
+            }, 300);
+        };
+
+        // 函数防抖
+        let debounce = document.getElementById("debounce")
+        var timer = false;
+        debounce.onscroll = function(){
+            clearTimeout(timer); 
+            timer = setTimeout(function(){
+                console.log("函数防抖");
+            }, 300);
+        };            
+    </script>
+
+    <!-- input输入 -->
+    <script>
+        function ajax(v) {
+            console.log(`ajax request ${v}`)
+        }
+        function throttleFun(fun, delay) {
+            let last, deferTimer
+            return function (args) {
+                let that = this
+                let _args = arguments
+                let now = +new Date()
+                if (last && now < last + delay) {
+                    clearTimeout(deferTimer)
+                    deferTimer = setTimeout(function () {
+                        last = now
+                        fun.apply(that, _args)
+                    }, delay)
+                }else {
+                    last = now
+                    fun.apply(that,_args)
+                }
+            }
+        }
+
+        function debounceFun(fun, delay) {
+            return function (args) {
+                let that = this
+                let _args = args
+                clearTimeout(fun.id)
+                fun.id = setTimeout(function () {
+                    fun.call(that, _args)
+                }, delay)
+            }
+        }
+
+        
+        let nothingInput = document.getElementById('nothingInput')
+        let throttleInput = document.getElementById('throttleInput')
+        let debounceInput = document.getElementById('debounceInput')
+
+        
+        //普通
+        nothingInput.addEventListener('keyup', function (e) {
+            ajax(e.target.value)
+        })
+       
+
+        //节流
+        let throttleAjax = throttleFun(ajax, 1000)
+        throttleInput.addEventListener('keyup', function(e) {
+            throttleAjax(e.target.value)
+        })
+
+        //防抖
+        let debounceAjax = debounceFun(ajax, 500)
+        debounceInput.addEventListener('keyup', function (e) {
+           debounceAjax(e.target.value)
+        })
+
+
+    </script>
+</body>
+</html>
