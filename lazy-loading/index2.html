@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>图片懒加载</title>
+    <style>
+        * { padding: 0; margin: 0; } 
+        .lazy-load{
+            width: 1000px;
+            margin: 0 auto;
+        }
+        img {
+            display: inline-block;
+            width: 100%;
+            height: 500px;
+            background: gray;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="lazy-load">
+        <img data-src="https://cdn.pixabay.com/photo/2017/02/22/17/02/beach-2089936__480.jpg" alt="图片来源：pixabay" title="图片来源：pixabay">
+        <img data-src="https://cdn.pixabay.com/photo/2018/03/12/20/07/maldives-3220702__480.jpg" alt="图片来源：pixabay" title>
+        <img data-src="https://cdn.pixabay.com/photo/2017/10/10/07/48/hills-2836301__480.jpg" alt="图片来源：pixabay" title="图片来源：pixabay">
+        <img data-src="https://cdn.pixabay.com/photo/2019/09/04/20/34/plantation-4452538__480.jpg" alt="图片来源：pixabay" title="图片来源：pixabay">
+        <img data-src="https://cdn.pixabay.com/photo/2015/03/26/10/09/footpath-691021__480.jpg" alt="图片来源：pixabay" title="图片来源：pixabay">
+        <img data-src="https://cdn.pixabay.com/photo/2015/02/14/19/46/winter-landscape-636634__480.jpg" alt="图片来源：pixabay" title="图片来源：pixabay">
+        <img data-src="https://cdn.pixabay.com/photo/2015/11/11/03/47/evening-1038148__480.jpg" alt="图片来源：pixabay" title="图片来源：pixabay">
+        <img data-src="https://cdn.pixabay.com/photo/2017/11/28/13/07/sunset-2983614__480.jpg" alt="图片来源：pixabay" title="图片来源：pixabay">
+    </div>
+    <script>
+        var io = new IntersectionObserver( callback =>{
+          callback.forEach((item) => {
+            let el = item.target;
+            let intersectionRatio = item.intersectionRatio;
+            
+            if (intersectionRatio > 0 && intersectionRatio <= 1) {
+              let img = new Image()
+              img.src = el.dataset.src
+              img.onload = function () {
+                el.src = img.src
+              }
+            }
+            el.onload = el.onerror = () => io.unobserve(el);
+          })
+        });
+
+        var viewHeight = document.documentElement.clientHeight; // 屏幕可视窗口高度
+        // 节流:加一个300ms的间隔执行
+        function throttle(fn, wait) {
+          let canRun = true
+          return function (...args) {
+            if (!canRun) return
+            canRun = false 
+            setTimeout(() => {
+              fn.apply(this, args)
+              canRun = true
+            }, wait)
+          }
+        }
+
+        function lazyload() {
+          let imgs = document.querySelectorAll('img') 
+          imgs.forEach(item => {
+            // 开始观察
+            io.observe(item);
+          })
+        }
+
+        lazyload();
+        let throttleLazyload = throttle(lazyload, 300)
+        document.addEventListener('scroll', throttleLazyload)
+    </script>
+</body>
+</html>
