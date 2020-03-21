@@ -31,6 +31,8 @@
 
 防抖和节流的目的都是为了减少不必要的计算，不浪费资源，只在适合的时候再进行触发计算。
 
+## [Demo](<https://www.itxcc.com/demo/throttle-debounce/index.html>)
+
 ## 应用场景
 
 防抖：
@@ -50,4 +52,4 @@
 
 - [The Difference Between Throttling and Debouncing](<https://css-tricks.com/the-difference-between-throttling-and-debouncing/>)
 
-- [浅谈 JavaScript 的函数节流](
+- [浅谈 JavaScript 的函数节流](<http://www.alloyteam.com/2012/11/javascript-throttle/>)
