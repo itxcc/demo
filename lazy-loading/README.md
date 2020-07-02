@@ -22,7 +22,7 @@
 
 缺点：只适用于下拉的时候去判断，如果当前在页面最底部，用户跳转到其他页面，返回过来还在最底部的话，就会加载所有的图片了
 
-[Demo](<https://www.itxcc.com/demo/lazy-loading/index.html>)
+[Demo](<https://itxcc.github.io/demo/lazy-loading/index.html>)
 
 ## 方法二
 
@@ -47,7 +47,7 @@ let viewHeight = document.documentElement.clientHeight； // 屏幕可视窗口�
 
 公式：`rect.top < viewHeight && rect.bottom >= 0`
 
-[Demo](<https://www.itxcc.com/demo/lazy-loading/index1.html>)
+[Demo](<https://itxcc.github.io/demo/lazy-loading/index1.html>)
 
 ## 方法三
 
@@ -78,7 +78,7 @@ callback的参数是一个数组，每个数组都是一个`IntersectionObserver
 
 公式：`intersectionRatio > 0 && intersectionRatio <= 1`
 
-[Demo](<https://www.itxcc.com/demo/lazy-loading/index2.html>)
+[Demo](<https://itxcc.github.io/demo/lazy-loading/index2.html>)
 
 ## 参考
 
