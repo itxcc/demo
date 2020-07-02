@@ -31,7 +31,7 @@
 
 防抖和节流的目的都是为了减少不必要的计算，不浪费资源，只在适合的时候再进行触发计算。
 
-## [Demo](<https://www.itxcc.com/demo/throttle-debounce/index.html>)
+## [Demo](<https://itxcc.github.io/demo/throttle-debounce/index.html>)
 
 ## 应用场景
 
